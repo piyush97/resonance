@@ -1,0 +1,38 @@
+# Resonance Project Rules
+
+## Project Context
+- Building AI customer service chatbot SaaS for B2B SaaS companies
+- Current phase: VALIDATION (Week 1-2)
+- Goal: 20 validation calls, confirm $500/mo willingness to pay
+- Budget: Tight bootstrap (<$2K/month)
+
+## Architecture
+- Monorepo: Next.js (web), Node.js/Fastify (API), Python/FastAPI (KB service)
+- Database: Supabase (PostgreSQL)
+- Vector DB: Pinecone
+- LLM: OpenAI (GPT-3.5 for 90%, GPT-4 for complex)
+
+## Constraints
+- No features outside MVP scope (widget, KB upload, basic analytics, escalation)
+- Use free tiers until 10 paying customers
+- Every feature must trace to customer pain point
+- Weekly revenue focus: "How does this get us closer to first $500?"
+
+## Phase Management
+- Validation: Customer calls, problem validation
+- MVP: Narrow feature set, shipping demoable product
+- Beta: 3-5 design partners, feedback loops
+- Growth: 10-50 paying customers, retention focus
+
+## Code Style
+- TypeScript strict mode
+- Python type hints
+- Clear error handling
+- Document complex logic
+
+## File Organization
+- `/apps/web` - Next.js dashboard
+- `/apps/api` - Node.js conversation service
+- `/services/kb` - Python RAG pipeline
+- `/packages/widget` - Embeddable React widget
+- `/docs` - Documentation, templates, guides
