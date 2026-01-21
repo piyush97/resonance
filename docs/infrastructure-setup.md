@@ -26,30 +26,54 @@ Step-by-step guide to set up all free-tier services for Resonance MVP.
 2. Sign up for free account
 3. Create index:
    - Name: `assistant-default` (you'll create per-assistant indexes later)
-   - Dimensions: `1536` (for text-embedding-3-small)
+   - Select model: `text-embedding-3-small` (OpenAI)
+   - Dimensions: `1536` (set this manually if it shows 512)
    - Metric: `cosine`
    - Cloud: `AWS`
    - Region: `us-east-1` (or closest)
 4. Go to API Keys
 5. Copy API key → `PINECONE_API_KEY`
 
-## 3. OpenAI (LLM API)
+**Note**: Pinecone handles embeddings via OpenAI's text-embedding-3-small. You don't need a separate OpenAI API key for embeddings.
+
+## 3. Local LLM Setup (Development) - RECOMMENDED
+
+For local development, use Ollama (free, runs on your GPU):
+
+1. Install Ollama: [ollama.ai](https://ollama.ai) or `brew install ollama`
+2. Start Ollama: `ollama serve`
+3. Pull a model: `ollama pull llama3` (or `mistral`, `phi3`)
+4. Test: `ollama run llama3 "Hello"`
+
+See `docs/local-llm-setup.md` for detailed instructions.
+
+**No API key needed for local development!**
+
+## 4. OpenAI (API Key) - REQUIRED for Embeddings
+
+**Important**: Even if using local Ollama for chat, you need an OpenAI API key for embeddings.
 
 1. Go to [platform.openai.com](https://platform.openai.com)
 2. Sign up / Log in
 3. Go to API Keys → Create new secret key
 4. Copy key → `OPENAI_API_KEY`
-5. Set usage limits:
+5. Set usage limits (IMPORTANT):
    - Go to Billing → Usage limits
-   - Set hard limit: $50/month (adjust based on budget)
+   - Set hard limit: $20/month for validation phase
    - This prevents surprise bills
 
-**Cost optimization:**
-- Use `gpt-3.5-turbo` for 90% of queries (~$0.002 per request)
-- Use `gpt-4-turbo` only for complex queries (~$0.03 per request)
-- Use `text-embedding-3-small` for embeddings (~$0.00002 per 1K tokens)
+**What OpenAI is used for:**
+- **Embeddings** (REQUIRED): `text-embedding-3-small` - ~$0.00002 per 1K tokens
+- **Chat** (OPTIONAL): Only if `LLM_PROVIDER=openai` - ~$0.002 per request
 
-## 4. Vercel (Frontend Hosting)
+**Cost for validation phase:**
+- 100 documents embedded: ~$0.20
+- 1,000 test queries: ~$0.10
+- **Total: Less than $1 for entire Week 1**
+
+Use local Ollama for chat (free), OpenAI only for embeddings (pennies).
+
+## 5. Vercel (Frontend Hosting)
 
 1. Go to [vercel.com](https://vercel.com)
 2. Sign up with GitHub
@@ -67,7 +91,7 @@ Step-by-step guide to set up all free-tier services for Resonance MVP.
 - Unlimited deployments
 - Perfect for MVP
 
-## 5. Railway / Fly.io (Backend Hosting)
+## 6. Railway / Fly.io (Backend Hosting)
 
 ### Option A: Railway (Easier)
 
@@ -92,7 +116,7 @@ Step-by-step guide to set up all free-tier services for Resonance MVP.
 
 **Free tier:** 3 shared VMs, 160GB outbound data/month
 
-## 6. Upstash Redis (Cache)
+## 7. Upstash Redis (Cache)
 
 1. Go to [upstash.com](https://upstash.com)
 2. Sign up
@@ -106,7 +130,7 @@ Step-by-step guide to set up all free-tier services for Resonance MVP.
 
 **Free tier:** 10,000 commands/day (plenty for MVP)
 
-## 7. Resend (Email)
+## 8. Resend (Email)
 
 1. Go to [resend.com](https://resend.com)
 2. Sign up
@@ -129,6 +153,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxx...
 ```
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_SERVICE_KEY=eyJxxx...
+KB_SERVICE_URL=http://localhost:8000
 PORT=3001
 LOG_LEVEL=info
 UPSTASH_REDIS_REST_URL=https://xxx.upstash.io
@@ -136,8 +161,29 @@ UPSTASH_REDIS_REST_TOKEN=xxx
 ```
 
 ### `services/kb/.env`
+
+**For Local Development (Recommended):**
 ```
+# LLM for chat (local = free!)
+LLM_PROVIDER=local
+OLLAMA_BASE_URL=http://localhost:11434/v1
+OLLAMA_MODEL=llama3.2:latest
+
+# OpenAI for embeddings (required, but very cheap)
+OPENAI_API_KEY=sk-your-key-here
+
+# Pinecone
+PINECONE_API_KEY=xxx
+PINECONE_ENVIRONMENT=us-east-1
+
+PORT=8000
+```
+
+**For Production (OpenAI):**
+```
+LLM_PROVIDER=openai
 OPENAI_API_KEY=sk-xxx...
+OPENAI_MODEL=gpt-3.5-turbo
 PINECONE_API_KEY=xxx
 PINECONE_ENVIRONMENT=us-east-1
 PORT=8000
@@ -153,10 +199,13 @@ PORT=8000
 | Railway | $5 credit | $0-5 |
 | Upstash | 10K commands/day | $0 |
 | Resend | 3K emails/month | $0 |
-| OpenAI | Pay-as-you-go | $50-100 |
-| **Total** | | **$50-105/month** |
+| Local LLM (Ollama) | Your GPU | $0 |
+| OpenAI (embeddings) | Pay-as-you-go | $1-5 |
+| OpenAI (chat, optional) | Pay-as-you-go | $0-50 |
+| **Total** | | **$1-60/month** |
 
-This fits within your $2K/month budget with room to scale.
+**With local LLM + OpenAI embeddings**: $1-10/month (embeddings + Railway)
+**With full OpenAI**: $50-110/month
 
 ## Next Steps
 

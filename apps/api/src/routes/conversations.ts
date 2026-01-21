@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
+import { chatWithRAG } from '../lib/kb-service.js'
 
 const createConversationSchema = z.object({
   visitor_id: z.string(),
@@ -37,30 +38,49 @@ export async function conversationRoutes(fastify: FastifyInstance) {
 
   // WebSocket handler for real-time messaging
   fastify.register(async function (fastify) {
-    fastify.get('/conversations/:id/ws', { websocket: true }, (connection, req) => {
+    fastify.get('/conversations/:id/ws', { websocket: true }, (socket, req) => {
       const { id } = req.params as { id: string }
       
-      connection.socket.on('message', async (message: Buffer) => {
+      socket.on('message', async (message: Buffer) => {
         try {
           const data = JSON.parse(message.toString())
           
           if (data.type === 'message') {
-            // TODO: Process message through RAG pipeline
-            // TODO: Get AI response from KB service
-            // TODO: Stream response back
-            
-            connection.socket.send(JSON.stringify({
-              type: 'response',
-              content: 'This is a placeholder response. RAG pipeline coming soon.',
-              sources: [],
-            }))
+            try {
+              // Get AI response from KB service (RAG pipeline)
+              const chatResponse = await chatWithRAG({
+                query: data.content,
+                assistant_id: data.assistant_id || 'default',
+                conversation_history: data.history || [],
+              })
+              
+              socket.send(JSON.stringify({
+                type: 'response',
+                content: chatResponse.response,
+                sources: chatResponse.sources,
+              }))
+            } catch (error) {
+              console.error('Chat error:', error)
+              socket.send(JSON.stringify({
+                type: 'error',
+                message: 'Failed to generate response',
+              }))
+            }
           }
         } catch (error) {
-          connection.socket.send(JSON.stringify({
+          socket.send(JSON.stringify({
             type: 'error',
             message: 'Failed to process message',
           }))
         }
+      })
+      
+      socket.on('close', () => {
+        fastify.log.info(`WebSocket closed for conversation ${id}`)
+      })
+      
+      socket.on('error', (error: Error) => {
+        fastify.log.error({ err: error }, `WebSocket error for conversation ${id}`)
       })
     })
   })

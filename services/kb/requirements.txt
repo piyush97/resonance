@@ -1,13 +1,21 @@
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
-python-dotenv==1.0.0
-pydantic==2.5.3
-pydantic-settings==2.1.0
-openai==1.10.0
-pinecone-client==3.0.0
-langchain==0.1.5
-langchain-openai==0.0.2
-langchain-community==0.0.20
-pypdf2==3.0.1
-python-multipart==0.0.6
-supabase==2.3.4
+# Core Web Framework (Latest as of Jan 2025)
+fastapi[standard]>=0.128.0
+uvicorn[standard]>=0.40.0
+
+# AI & LLM (Latest versions)
+openai>=2.15.0
+sentence-transformers>=5.2.0
+torch>=2.9.1
+
+# Vector Database (Latest Pinecone SDK v8)
+pinecone>=8.0.0
+
+# Environment & Utilities
+python-dotenv>=1.2.1
+python-multipart>=0.0.21
+
+# Document Processing
+pypdf2>=3.0.1
+
+# Database
+supabase>=2.27.2

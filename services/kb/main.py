@@ -8,9 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import uvicorn
+from typing import List, Dict, Optional
 
-from .services.ingestion import ingest_document
-from .services.retrieval import search_knowledge_base
+from services.ingestion import ingest_document
+from services.retrieval import search_knowledge_base
+from services.llm import generate_rag_response
 
 load_dotenv()
 
@@ -29,6 +31,13 @@ class SearchRequest(BaseModel):
     query: str
     assistant_id: str
     top_k: int = 5
+
+
+class ChatRequest(BaseModel):
+    query: str
+    assistant_id: str
+    conversation_history: Optional[List[Dict[str, str]]] = None
+    system_prompt: Optional[str] = None
 
 
 @app.get("/health")
@@ -82,6 +91,43 @@ async def search_documents(request: SearchRequest):
         return {
             "query": request.query,
             "results": results,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/knowledge-base/chat")
+async def chat_with_rag(request: ChatRequest):
+    """
+    Generate RAG-based chat response
+    1. Search knowledge base for relevant context
+    2. Generate response using LLM (local or OpenAI)
+    """
+    try:
+        # Step 1: Search knowledge base
+        context_chunks = await search_knowledge_base(
+            query=request.query,
+            assistant_id=request.assistant_id,
+            top_k=5,
+        )
+        
+        # Step 2: Generate response with context
+        response = await generate_rag_response(
+            user_query=request.query,
+            context_chunks=context_chunks,
+            conversation_history=request.conversation_history,
+            system_prompt=request.system_prompt,
+        )
+        
+        return {
+            "response": response,
+            "sources": [
+                {
+                    "source": chunk.get("source", "unknown"),
+                    "score": chunk.get("score", 0),
+                }
+                for chunk in context_chunks
+            ],
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
