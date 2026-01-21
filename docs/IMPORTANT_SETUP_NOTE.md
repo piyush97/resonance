@@ -85,7 +85,7 @@ OLLAMA_MODEL=llama3.2:latest
 OPENAI_API_KEY=sk-your-key-here
 
 # Pinecone - You already have this
-PINECONE_API_KEY=pcsk_5i7Rya_6GahmGe7VHGXHBxrRodfNpHFB8uB4RHpe25eabUK8YrBbSDrnqMy2iSxrQ5uscv
+PINECONE_API_KEY=pcsk_your_pinecone_api_key_here
 PINECONE_ENVIRONMENT=us-east-1
 
 PORT=8000

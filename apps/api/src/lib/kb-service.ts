@@ -4,6 +4,7 @@
  */
 
 const KB_SERVICE_URL = process.env.KB_SERVICE_URL || 'http://localhost:8000'
+const KB_SERVICE_API_KEY = process.env.KB_SERVICE_API_KEY || ''
 
 export interface ChatResponse {
   response: string
@@ -28,13 +29,14 @@ export async function chatWithRAG(request: ChatRequest): Promise<ChatResponse> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...(KB_SERVICE_API_KEY ? { Authorization: `Bearer ${KB_SERVICE_API_KEY}` } : {}),
     },
     body: JSON.stringify(request),
   })
 
   if (!response.ok) {
-    const error = await response.text()
-    throw new Error(`KB Service error: ${error}`)
+    // Avoid bubbling up upstream error bodies (may include internal details).
+    throw new Error(`KB Service error (${response.status})`)
   }
 
   return (await response.json()) as ChatResponse
