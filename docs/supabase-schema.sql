@@ -23,9 +23,15 @@ CREATE TABLE assistants (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
+    description TEXT,
+    instructions TEXT DEFAULT 'You are a helpful customer service assistant.',
+    model VARCHAR(100) DEFAULT 'llama3.2:latest',
+    temperature FLOAT DEFAULT 0.7 CHECK (temperature >= 0 AND temperature <= 2),
+    max_tokens INT,
     system_prompt TEXT,
     tone VARCHAR(50) DEFAULT 'friendly' CHECK (tone IN ('friendly', 'professional', 'casual')),
     escalation_threshold FLOAT DEFAULT 0.6 CHECK (escalation_threshold >= 0 AND escalation_threshold <= 1),
+    status VARCHAR(50) DEFAULT 'active' CHECK (status IN ('active', 'training', 'paused')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
