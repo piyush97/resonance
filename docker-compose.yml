@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # Knowledge Base Service (Python FastAPI)
+  kb:
+    build:
+      context: ./services/kb
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - ENVIRONMENT=development
+      - LLM_PROVIDER=local
+      - OLLAMA_BASE_URL=http://ollama:11434/v1
+      - OLLAMA_MODEL=llama3.2:latest
+      - EMBEDDING_PROVIDER=local
+      - LOCAL_EMBEDDING_MODEL=all-MiniLM-L6-v2
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - PINECONE_INDEX_NAME=${PINECONE_INDEX_NAME:-resonance-kb}
+      - KB_SERVICE_API_KEY=${KB_SERVICE_API_KEY}
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+    depends_on:
+      - ollama
+    networks:
+      - resonance
+    restart: unless-stopped
+
+  # API Service (Node.js Fastify)
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=development
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - KB_SERVICE_URL=http://kb:8000
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - KB_SERVICE_API_KEY=${KB_SERVICE_API_KEY}
+      - ALLOWED_ORIGINS=http://localhost:3000
+    depends_on:
+      - kb
+    networks:
+      - resonance
+    restart: unless-stopped
+
+  # Web Dashboard (Next.js)
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+    depends_on:
+      - api
+    networks:
+      - resonance
+    restart: unless-stopped
+
+  # Ollama (Local LLM)
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - resonance
+    restart: unless-stopped
+    # Uncomment for GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+networks:
+  resonance:
+    driver: bridge
+
+volumes:
+  ollama_data:
