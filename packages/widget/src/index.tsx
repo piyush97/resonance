@@ -7,6 +7,9 @@ interface ResonanceConfig {
   assistantId: string
   primaryColor?: string
   position?: 'bottom-right' | 'bottom-left'
+  welcomeMessage?: string
+  title?: string
+  subtitle?: string
 }
 
 // Initialize widget
@@ -24,7 +27,7 @@ if (typeof window !== 'undefined') {
   const script = document.currentScript as HTMLScriptElement
   if (script) {
     const assistantId = script.getAttribute('data-assistant-id')
-    const apiUrl = script.getAttribute('data-api-url') || 'https://api.resonance.ai'
+    const apiUrl = script.getAttribute('data-api-url') || 'http://localhost:3001'
     const primaryColor = script.getAttribute('data-primary-color') || '#0ea5e9'
     const position = (script.getAttribute('data-position') || 'bottom-right') as 'bottom-right' | 'bottom-left'
 

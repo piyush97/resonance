@@ -1,200 +1,355 @@
-.brainchat-widget {
+/* Resonance Chat Widget Styles */
+
+.resonance-widget {
   position: fixed;
   z-index: 9999;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-.brainchat-button {
-  width: 56px;
-  height: 56px;
-  border-radius: 28px;
+.resonance-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
   border: none;
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
 }
 
-.brainchat-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+.resonance-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-.brainchat-window {
-  width: 380px;
-  height: 600px;
+.resonance-window {
+  width: 400px;
+  height: 640px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.brainchat-header {
-  padding: 16px 20px;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.resonance-header {
+  padding: 20px 24px;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: linear-gradient(135deg, var(--primary-color, #0ea5e9), var(--primary-color-dark, #0284c7));
 }
 
-.brainchat-title {
+.resonance-title {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
 }
 
-.brainchat-subtitle {
+.resonance-subtitle {
   margin: 4px 0 0 0;
-  font-size: 12px;
+  font-size: 13px;
   opacity: 0.9;
 }
 
-.brainchat-close {
-  background: none;
+.resonance-close {
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   color: white;
   font-size: 24px;
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: background-color 0.2s;
 }
 
-.brainchat-close:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.resonance-close:hover {
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
-.brainchat-messages {
+.resonance-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  background: #fafafa;
 }
 
-.brainchat-empty {
+.resonance-empty {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #666;
+  color: #64748b;
   text-align: center;
+  padding: 20px;
 }
 
-.brainchat-message {
+.resonance-empty p {
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-size: 15px;
+}
+
+.resonance-message {
   display: flex;
-  max-width: 80%;
+  flex-direction: column;
+  max-width: 85%;
+  animation: fadeIn 0.3s ease;
 }
 
-.brainchat-message-user {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resonance-message-user {
   align-self: flex-end;
   margin-left: auto;
 }
 
-.brainchat-message-assistant {
+.resonance-message-assistant {
   align-self: flex-start;
 }
 
-.brainchat-message-content {
-  padding: 10px 14px;
-  border-radius: 12px;
+.resonance-message-content {
+  padding: 12px 16px;
+  border-radius: 16px;
   word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
-.brainchat-message-user .brainchat-message-content {
-  background-color: #0ea5e9;
+.resonance-message-user .resonance-message-content {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
   color: white;
   border-bottom-right-radius: 4px;
 }
 
-.brainchat-message-assistant .brainchat-message-content {
-  background-color: #f3f4f6;
-  color: #111827;
+.resonance-message-assistant .resonance-message-content {
+  background: white;
+  color: #1e293b;
   border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.brainchat-typing {
+.resonance-sources {
+  margin-top: 8px;
   display: flex;
-  gap: 4px;
-  padding: 10px 14px;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
 }
 
-.brainchat-typing span {
+.resonance-sources-label {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.resonance-source-tag {
+  font-size: 11px;
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.resonance-typing {
+  display: flex;
+  gap: 5px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.resonance-typing span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #9ca3af;
+  background-color: #94a3b8;
   animation: typing 1.4s infinite;
 }
 
-.brainchat-typing span:nth-child(2) {
+.resonance-typing span:nth-child(2) {
   animation-delay: 0.2s;
 }
 
-.brainchat-typing span:nth-child(3) {
+.resonance-typing span:nth-child(3) {
   animation-delay: 0.4s;
 }
 
 @keyframes typing {
   0%, 60%, 100% {
     transform: translateY(0);
-    opacity: 0.7;
+    opacity: 0.5;
   }
   30% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
     opacity: 1;
   }
 }
 
-.brainchat-input-container {
-  padding: 16px;
-  border-top: 1px solid #e5e7eb;
+.resonance-input-container {
+  padding: 16px 20px;
+  border-top: 1px solid #e2e8f0;
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  background: white;
 }
 
-.brainchat-input {
+.resonance-input {
   flex: 1;
-  padding: 10px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.brainchat-input:focus {
+.resonance-input:focus {
   border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
-.brainchat-send {
-  width: 40px;
-  height: 40px;
+.resonance-input::placeholder {
+  color: #94a3b8;
+}
+
+.resonance-send {
+  width: 44px;
+  height: 44px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   color: white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
-.brainchat-send:disabled {
-  opacity: 0.5;
+.resonance-send:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-.brainchat-send:not(:disabled):hover {
+.resonance-send:not(:disabled):hover {
   opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.resonance-send:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+.resonance-powered-by {
+  padding: 8px 20px;
+  text-align: center;
+  font-size: 11px;
+  color: #94a3b8;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.resonance-powered-by a {
+  color: #0ea5e9;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.resonance-powered-by a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .resonance-window {
+    width: calc(100vw - 32px);
+    height: calc(100vh - 100px);
+    max-height: 640px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .resonance-window {
+    background: #1e293b;
+  }
+
+  .resonance-messages {
+    background: #0f172a;
+  }
+
+  .resonance-message-assistant .resonance-message-content {
+    background: #334155;
+    color: #f1f5f9;
+  }
+
+  .resonance-empty p {
+    background: #334155;
+    color: #f1f5f9;
+  }
+
+  .resonance-input-container {
+    background: #1e293b;
+    border-top-color: #334155;
+  }
+
+  .resonance-input {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f1f5f9;
+  }
+
+  .resonance-input:focus {
+    border-color: #0ea5e9;
+  }
+
+  .resonance-powered-by {
+    background: #0f172a;
+    border-top-color: #334155;
+  }
+
+  .resonance-typing {
+    background: #334155;
+  }
+
+  .resonance-source-tag {
+    background: #334155;
+    color: #94a3b8;
+  }
 }
