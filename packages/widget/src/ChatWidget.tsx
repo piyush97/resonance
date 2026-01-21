@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 interface Message {
   id: string
@@ -15,11 +15,14 @@ interface ChatWidgetProps {
 }
 
 export function ChatWidget({
-  apiUrl = 'https://api.resonance.ai',
-  assistantId,
+  apiUrl: _apiUrl = 'https://api.resonance.ai',
+  assistantId: _assistantId,
   primaryColor = '#0ea5e9',
   position = 'bottom-right',
 }: ChatWidgetProps) {
+  // TODO: Use apiUrl and assistantId for WebSocket connection
+  void _apiUrl
+  void _assistantId
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState('')

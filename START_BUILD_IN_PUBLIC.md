@@ -68,27 +68,55 @@ Build a complete, demoable product in 7 days while building in public, then vali
 
 ## 📱 First Post (Do This Now!)
 
-### Twitter/X
+### Twitter/X (Thread Format)
 
+**Tweet 1** (Main):
 ```
-🚀 Starting Resonance - AI chatbot for B2B SaaS
+🚀 Building Resonance in public
 
-Building in public: $0 → $1M ARR in 12 months
+AI chatbot for B2B SaaS
+Goal: $0 → $1M ARR in 12 months
 
 Day 0 ✅:
-• KB service with RAG pipeline
-• Local Ollama LLM (free!)
-• Pinecone embeddings (free!)
-• All services running
+✅ RAG pipeline
+✅ Local Ollama LLM
+✅ Pinecone embeddings
+✅ $0/month cost
 
-Tech: Next.js, FastAPI, Ollama, Pinecone
-Cost: $0/month (using my RTX 5070 Ti)
-
-Day 1 tomorrow: Building the dashboard
-
-Follow along 👇
-#buildinpublic #indiehackers #saas #ai
+Thread 👇
+#buildinpublic #ai #saas
 ```
+(272 chars)
+
+**Tweet 2** (Tech):
+```
+Tech stack (all free):
+• FastAPI + Ollama
+• Pinecone integrated embeddings
+• RTX 5070 Ti GPU
+• 11K embeddings/sec
+
+No OpenAI costs!
+
+Day 1 tomorrow: Dashboard UI
+
+Follow along 🚀
+```
+(195 chars)
+
+**Tweet 3** (Ask):
+```
+Question for SaaS founders:
+
+What's your biggest customer support pain?
+- Cost?
+- Response time?
+- Quality?
+- Scalability?
+
+Building Resonance to solve this. Your input helps! 🙏
+```
+(193 chars)
 
 **Attach**: Screenshot of your terminal showing all services running
 

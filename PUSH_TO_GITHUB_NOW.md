@@ -84,32 +84,55 @@ git push origin main
 
 ## 📱 Post Immediately After Push
 
-### Twitter/X (Copy & Paste)
+### Twitter/X (280 char limit)
 
+**Main Tweet** (242 chars):
 ```
-🚀 Just open-sourced Resonance on GitHub!
+🚀 Open-sourced Resonance - AI chatbot for B2B SaaS
 
-AI chatbot for B2B SaaS companies
-Built with 100% FREE stack
-
-✅ Pinecone embeddings (free)
-✅ Local Ollama LLM (free)
-✅ GPU accelerated (RTX 5070 Ti)
-✅ Full RAG pipeline
-✅ WebSocket real-time chat
-
-Cost: $0/month
-Performance: 11K+ embeddings/sec
+100% FREE stack:
+✅ Pinecone embeddings
+✅ Local Ollama LLM
+✅ GPU accelerated
+✅ $0/month
 
 Repo: github.com/YOUR_USERNAME/resonance
 
-Building in public to $1M ARR
-Follow the journey 👇
+Building to $1M ARR in public
 
-#buildinpublic #indiehackers #saas #ai #opensource
+#buildinpublic #ai #saas
 ```
 
-**Attach**: Screenshot of GitHub repo or terminal
+**Reply Tweet 1** (Tech details):
+```
+Tech stack (all latest):
+• FastAPI 0.128
+• Fastify 5.2
+• Next.js 14.1
+• Pinecone 8.0
+• Ollama llama3.2
+
+11K+ embeddings/sec
+RTX 5070 Ti GPU
+
+All working locally 🚀
+```
+
+**Reply Tweet 2** (Features):
+```
+Features working:
+✅ PDF upload
+✅ Semantic search
+✅ RAG pipeline
+✅ WebSocket chat
+✅ Local LLM
+
+Next: Dashboard UI
+
+Follow along! 👇
+```
+
+**Attach**: Screenshot of terminal showing all services running
 
 ### LinkedIn
 

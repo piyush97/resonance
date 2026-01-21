@@ -1,5 +1,9 @@
 # Resonance - AI Customer Service Chatbot SaaS
 
+[![Build in Public](https://img.shields.io/badge/Build%20in%20Public-🚀-blue)](https://twitter.com/piyush97)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Cost](https://img.shields.io/badge/Cost-$0%2Fmonth-brightgreen)]()
+
 AI-powered customer service chatbot platform for B2B SaaS companies.
 
 ## Project Structure

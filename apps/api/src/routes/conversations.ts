@@ -6,7 +6,7 @@ const createConversationSchema = z.object({
   visitor_id: z.string(),
   channel: z.enum(['web', 'slack', 'whatsapp', 'email']),
   initial_message: z.string().optional(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
 })
 
 export async function conversationRoutes(fastify: FastifyInstance) {
