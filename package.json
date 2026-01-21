@@ -11,9 +11,16 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "type-check": "turbo run type-check"
+    "type-check": "turbo run type-check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:api": "vitest run apps/api",
+    "test:widget": "vitest run packages/widget"
   },
   "devDependencies": {
-    "turbo": "^2.7.5"
+    "@vitest/coverage-v8": "^4.0.17",
+    "turbo": "^2.7.5",
+    "vitest": "^4.0.17"
   }
 }

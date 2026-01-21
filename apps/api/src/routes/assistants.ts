@@ -15,7 +15,16 @@ const updateAssistantSchema = createAssistantSchema.partial()
 export async function assistantRoutes(fastify: FastifyInstance) {
   // Create assistant
   fastify.post('/assistants', async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = createAssistantSchema.parse(request.body)
+    const result = createAssistantSchema.safeParse(request.body)
+    
+    if (!result.success) {
+      return reply.status(400).send({
+        error: 'Validation failed',
+        details: result.error.issues,
+      })
+    }
+    
+    const body = result.data
     const supabase = (fastify as any).supabase
     
     const { data, error } = await supabase
@@ -79,7 +88,16 @@ export async function assistantRoutes(fastify: FastifyInstance) {
   // Update assistant
   fastify.patch('/assistants/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string }
-    const body = updateAssistantSchema.parse(request.body)
+    const result = updateAssistantSchema.safeParse(request.body)
+    
+    if (!result.success) {
+      return reply.status(400).send({
+        error: 'Validation failed',
+        details: result.error.issues,
+      })
+    }
+    
+    const body = result.data
     const supabase = (fastify as any).supabase
     
     const { data, error } = await supabase

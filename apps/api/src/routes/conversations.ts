@@ -12,7 +12,16 @@ const createConversationSchema = z.object({
 export async function conversationRoutes(fastify: FastifyInstance) {
   // Create new conversation
   fastify.post('/conversations/create', async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = createConversationSchema.parse(request.body)
+    const result = createConversationSchema.safeParse(request.body)
+    
+    if (!result.success) {
+      return reply.status(400).send({
+        error: 'Validation failed',
+        details: result.error.issues,
+      })
+    }
+    
+    const body = result.data
     
     // TODO: Create conversation in database
     // TODO: Initialize WebSocket connection

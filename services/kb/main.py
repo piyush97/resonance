@@ -40,9 +40,14 @@ class ChatRequest(BaseModel):
     system_prompt: Optional[str] = None
 
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to Resonance KB Service", "version": "0.1.0"}
+
+
 @app.get("/health")
 async def health():
-    return {"status": "ok", "service": "knowledge-base"}
+    return {"status": "ok", "service": "Resonance KB Service", "version": "0.1.0"}
 
 
 @app.post("/api/knowledge-base/upload")
